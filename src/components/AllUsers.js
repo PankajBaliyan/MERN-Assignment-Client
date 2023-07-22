@@ -209,7 +209,7 @@ const AllUsersList = (props) => {
                         Refresh Table Data
                     </button>
 
-                    <div className="row mt-3">
+                    <div className="mt-3">
                         {/* Search input */}
                         <div className=" form-group col-md-3 d-flex m-auto">
                             <input
