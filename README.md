@@ -1,70 +1,106 @@
-# Getting Started with Create React App
+# MERN Assignment Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a full-stack web application built using the MERN (MongoDB, Express, React, Node.js) stack. It is a simple user management system that allows users to view, add, update, and delete user information. The project implements user authentication using JSON Web Tokens (JWT) & Passport JS for securing API endpoints.
 
-## Available Scripts
+Live Preview Link : https://mern-assignment-client.onrender.com/
 
-In the project directory, you can run:
+## Features
+- View all users in a table with pagination support.
+- Search users by name or username.
+- Sort users by name or username in ascending or descending order.
+- Add new users with name, email (used as username), and password.
+- Update existing user information.
+- Delete users from the database.
+- User authentication using JWT & Passport JS for secure API access.
 
-### `npm start`
+## Technologies Used
+- Frontend: React (Create React App), React Router, Axios, Bootstrap, Font Awesome.
+- Backend: Node.js, Express.js, MongoDB (Mongoose), Passport.js, JSON Web Tokens (JWT), bcrypt.
+- Database: MongoDB (NoSQL database for storing user information).
+- Styling: Bootstrap for basic styling, custom CSS for specific styles.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Prerequisites
+Before running this project, make sure you have the following software installed on your system:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Node.js (https://nodejs.org) - for running the backend server and frontend development.
+- MongoDB (https://www.mongodb.com) - for the database storage.
 
-### `npm test`
+## Getting Started
+1. Clone the repository to your local machine:
+   ```
+    mkdir MERN-Assignment
+    cd MERN-Assignment
+    git clone https://github.com/PankajBaliyan/MERN-Assignment-Client.git
+    git clone https://github.com/PankajBaliyan/MERN-Assignment-Server.git
+    cd ..
+   ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Install the required dependencies for the Server and Client:
+    ```
+    cd MERN-Assignment-Client
+    npm install
+    cd ..
+    cd MERN-Assignment-Server
+    npm install
+    ```
 
-### `npm run build`
+3. Set up environment variables:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    Create a .env file in the MERN-Assignment-Server & MERN-Assignment-Client directory and add the following variables:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    ```
+    # MERN-Assignment-Client
+    REACT_APP_SERVER_URL = https://mern-assignment-5qen.onrender.com
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+    # MERN-Assignment-Server
+    PORT = 3001
+    URI=<your-mongodb-uri>
+    SESSION_SECRET_KEY=<your-secret-key>
+    ```
+    Replace <your-mongodb-uri> with your MongoDB connection string and <your-secret-key> with a secret key for JWT authentication.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+4. Run the application:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    Open two terminal windows (one for the Server and the other for the Client) and run the following commands:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+    ```
+    # In the MERN-Assignment-Server terminal window
+    cd MERN-Assignment-Server
+    node ./index.js
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+    # In the MERN-Assignment-Client terminal window
+    cd MERN-Assignment-Client
+    npm start
+    ```
 
-## Learn More
+    The backend server will start on http://localhost:3001, and the frontend development server will start on http://localhost:3000. The application should automatically open in your web browser.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+5. Access the application:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    Open your web browser and navigate to http://localhost:3000 to access the application.
 
-### Code Splitting
+## Usage
+Home Page:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- The home page displays a button "Add user!" that triggers a custom notification when a new user created.
+- The "Add User" form allows you to create new users by entering their name, email (used as username), and password.
+- Clicking the "Add User" button will add the user to the database.
 
-### Analyzing the Bundle Size
+All Users List:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- The "Refresh Table Data" button fetches all users from the backend and updates the user table.
+- The search bar allows you to search for users by name or username.
+- Clicking on the column headers "Name" and "Username" will sort the users in ascending or descending order.
+- The table displays users with their names, usernames, and two action buttons: "Update" and "Delete".
+- Clicking the "Update" button opens a modal that allows you to update the user's name, email, and password.
+- Clicking the "Delete" button will remove the user from the database.
+## License
+This project is licensed under the MIT License. Feel free to use and modify the code as per your requirements.
 
-### Making a Progressive Web App
+## Contact
+If you have any questions or need further assistance, feel free to contact me at pankajbaliyan90@gmail.com . Happy coding!
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
