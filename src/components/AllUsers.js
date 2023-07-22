@@ -58,9 +58,11 @@ const AllUsersList = (props) => {
             })
             .catch((error) => {
                 console.error('Failed to fetch users:', error);
-                setError('Failed to fetch users. Please try again later.');
+                setError(
+                    "Failed to fetch users. Please try again later OR No User's Available",
+                );
                 handleNotify(
-                    'Failed to fetch users. Please try again later. ❌ ',
+                    "Failed to fetch users. Please try again later OR No User's Available. ❌ ",
                 );
                 setLoading(false);
             });
@@ -137,6 +139,12 @@ const AllUsersList = (props) => {
             setSortField(field);
             setSortOrder('asc');
         }
+        // Show a notification message when sorting changes
+        handleNotify(
+            `Sorted by ${field} in ${
+                sortOrder === 'asc' ? 'descending' : 'ascending'
+            } order ✅`,
+        );
     };
 
     // Function to handle filtering when the search query changes
@@ -186,7 +194,11 @@ const AllUsersList = (props) => {
     }
 
     if (error) {
-        return <div>{error}</div>;
+        return (
+            <div className="mt-3 text-center" style={{ color: 'red' }}>
+                {error}
+            </div>
+        );
     }
 
     return (

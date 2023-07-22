@@ -2,6 +2,11 @@
     /* text-align: center; */
 }
 
+.active > .page-link,
+.page-link.active {
+    z-index: 0 !important;
+}
+
 .App-logo {
     height: 40vmin;
     pointer-events: none;
