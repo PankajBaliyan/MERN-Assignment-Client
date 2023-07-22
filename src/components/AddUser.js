@@ -3,7 +3,7 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
-// TODO: ADd notifications 
+// TODO: ADd notifications
 // TODO: remove console.log
 
 const AddUserForm = () => {
