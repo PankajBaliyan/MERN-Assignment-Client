@@ -2,6 +2,10 @@
     /* text-align: center; */
 }
 
+tr {
+    text-align: center;
+}
+
 .active > .page-link,
 .page-link.active {
     z-index: 0 !important;

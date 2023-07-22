@@ -58,12 +58,8 @@ const AllUsersList = (props) => {
             })
             .catch((error) => {
                 console.error('Failed to fetch users:', error);
-                setError(
-                    "Failed to fetch users. Please try again later OR No User's Available",
-                );
-                handleNotify(
-                    "Failed to fetch users. Please try again later OR No User's Available. ❌ ",
-                );
+                setError('No Data Available, Try to add new user');
+                handleNotify('No Data Available, Try to add new user. ❌ ');
                 setLoading(false);
             });
     };
@@ -166,13 +162,14 @@ const AllUsersList = (props) => {
         if (sortField === 'id') {
             return sortOrder === 'asc' ? a._id - b._id : b._id - a._id;
         } else {
-            const aValue = a[sortField].toLowerCase();
-            const bValue = b[sortField].toLowerCase();
+            const aValue = a[sortField];
+            const bValue = b[sortField];
             return sortOrder === 'asc'
-                ? aValue.localeCompare(bValue)
-                : bValue.localeCompare(aValue);
+                ? aValue.localeCompare(bValue, undefined, { numeric: true })
+                : bValue.localeCompare(aValue, undefined, { numeric: true });
         }
     });
+
     // Calculate the total number of pages
     const totalPages = Math.ceil(sortedAndFilteredUsers.length / usersPerPage);
 
@@ -190,15 +187,11 @@ const AllUsersList = (props) => {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className="mt-3 text-center">Loading...</div>;
     }
 
     if (error) {
-        return (
-            <div className="mt-3 text-center" style={{ color: 'red' }}>
-                {error}
-            </div>
-        );
+        return <div className="mt-3 text-center">{error}</div>;
     }
 
     return (
@@ -309,7 +302,7 @@ const AllUsersList = (props) => {
                 )}
 
                 {/* Render pagination controls */}
-                <div>
+                <div className="d-flex justify-content-center">
                     <nav>
                         <ul className="pagination">
                             {Array.from({ length: totalPages }, (_, index) => (
