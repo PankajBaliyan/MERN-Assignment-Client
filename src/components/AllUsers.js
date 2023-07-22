@@ -2,7 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import {
+    faEye,
+    faEyeSlash,
+    faSortUp,
+    faSortDown,
+    faSort,
+} from '@fortawesome/free-solid-svg-icons';
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const AllUsersList = () => {
     const [users, setUsers] = useState([]);
@@ -14,13 +22,21 @@ const AllUsersList = () => {
         username: '',
         password: '',
     });
+
     // Add a state to hold the userId
     const [userId, setUserId] = useState('');
+
     // Add a state to control the visibility of the password field
     const [showPassword, setShowPassword] = useState(false);
 
+    // Used to search functionality
     const [searchQuery, setSearchQuery] = useState('');
 
+    // Used to sort functionality
+    const [sortField, setSortField] = useState('name');
+    const [sortOrder, setSortOrder] = useState('asc'); // 'asc' or 'desc'
+
+    // Used in serial number in users list
     let userNumber = 0;
 
     useEffect(() => {
@@ -30,7 +46,7 @@ const AllUsersList = () => {
     const fetchUsers = () => {
         // Fetch all users from the backend API using Axios
         axios
-            .get('http://localhost:3001/users')
+            .get(`${SERVER_URL}/users`)
             .then((response) => {
                 setUsers(response.data);
                 setLoading(false);
@@ -73,7 +89,7 @@ const AllUsersList = () => {
         // Make an HTTP PUT request to update the user details
         axios
             .patch(
-                `http://localhost:3001/updateUserDetails/${userId}`,
+                `${SERVER_URL}/updateUserDetails/${userId}`,
                 updateData,
             )
             .then((response) => {
@@ -94,7 +110,7 @@ const AllUsersList = () => {
     const handleDeleteUser = (userId) => {
         // Make an HTTP DELETE request to delete the user with the given userId
         axios
-            .delete(`http://localhost:3001/deleteUser/${userId}`)
+            .delete(`${SERVER_URL}/deleteUser/${userId}`)
             .then((response) => {
                 console.log('User deleted successfully');
                 // Handle success, redirect, or show a success message
@@ -111,19 +127,44 @@ const AllUsersList = () => {
         // Toggle the visibility of the password field
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
+    // Function to handle sorting when a table header is clicked
+    const handleSort = (field) => {
+        // If the clicked field is the current sort field, toggle the sort order
+        if (field === sortField) {
+            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+        } else {
+            // If the clicked field is a different field, set it as the new sort field and default to ascending order
+            setSortField(field);
+            setSortOrder('asc');
+        }
+    };
 
+    // Function to handle filtering when the search query changes
     const handleSearchChange = (event) => {
         // Update the search query state when the search input changes
         setSearchQuery(event.target.value);
     };
 
+    // Function to filter users based on the search query
     const filteredUsers = users.filter((user) => {
-        // Filter users based on search query (case-insensitive)
         const searchValue = searchQuery.toLowerCase();
         return (
             user.name.toLowerCase().includes(searchValue) ||
             user.username.toLowerCase().includes(searchValue)
         );
+    });
+
+    // Function to sort the filtered users based on the current sort field and order
+    const sortedAndFilteredUsers = filteredUsers.sort((a, b) => {
+        if (sortField === 'id') {
+            return sortOrder === 'asc' ? a._id - b._id : b._id - a._id;
+        } else {
+            const aValue = a[sortField].toLowerCase();
+            const bValue = b[sortField].toLowerCase();
+            return sortOrder === 'asc'
+                ? aValue.localeCompare(bValue)
+                : bValue.localeCompare(aValue);
+        }
     });
 
     if (loading) {
@@ -137,7 +178,7 @@ const AllUsersList = () => {
     return (
         <div>
             <div>
-                <div style={{ textAlign: 'center' }}>
+                <div style={{ textAlign: 'center' }} className='mb-5'>
                     <h2>All Users List</h2>
                     <button onClick={fetchUsers} className="btn btn-success">
                         Refresh Table Data
@@ -166,13 +207,47 @@ const AllUsersList = () => {
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Email</th>
+                                <th
+                                    scope="col"
+                                    onClick={() => handleSort('name')}
+                                >
+                                    Name{' '}
+                                    {sortField === 'name' && (
+                                        <FontAwesomeIcon
+                                            icon={
+                                                sortOrder === 'asc'
+                                                    ? faSortUp
+                                                    : faSortDown
+                                            }
+                                        />
+                                    )}
+                                    {sortField === 'username' && (
+                                        <FontAwesomeIcon icon={faSort} />
+                                    )}
+                                </th>
+                                <th
+                                    scope="col"
+                                    onClick={() => handleSort('username')}
+                                >
+                                    Username{' '}
+                                    {sortField === 'username' && (
+                                        <FontAwesomeIcon
+                                            icon={
+                                                sortOrder === 'asc'
+                                                    ? faSortUp
+                                                    : faSortDown
+                                            }
+                                        />
+                                    )}
+                                    {sortField === 'name' && (
+                                        <FontAwesomeIcon icon={faSort} />
+                                    )}
+                                </th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredUsers.map((user) => (
+                            {sortedAndFilteredUsers.map((user) => (
                                 <tr key={user._id}>
                                     <th scope="row">{(userNumber += 1)}</th>
                                     <td>{user.name}</td>
