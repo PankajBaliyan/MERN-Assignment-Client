@@ -12,7 +12,7 @@ import {
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-const AllUsersList = () => {
+const AllUsersList = (props) => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -44,6 +44,10 @@ const AllUsersList = () => {
         fetchUsers();
     }, []);
 
+    const handleNotify = (message) => {
+        props.notify(message);
+    };
+
     const fetchUsers = () => {
         // Fetch all users from the backend API using Axios
         axios
@@ -55,6 +59,9 @@ const AllUsersList = () => {
             .catch((error) => {
                 console.error('Failed to fetch users:', error);
                 setError('Failed to fetch users. Please try again later.');
+                handleNotify(
+                    'Failed to fetch users. Please try again later. ❌ ',
+                );
                 setLoading(false);
             });
     };
@@ -91,14 +98,11 @@ const AllUsersList = () => {
         axios
             .patch(`${SERVER_URL}/updateUserDetails/${userId}`, updateData)
             .then((response) => {
-                console.log('User data updated successfully:', response.data);
-                // Handle success, show a success message, or take appropriate action
-                // For example, you can fetch the updated user list from the server again
+                handleNotify('User data updated Successfully ✅');
                 fetchUsers();
             })
             .catch((error) => {
-                console.error('Failed to update user data:', error);
-                // Handle error, show an error message, or take appropriate action
+                handleNotify('User data updated Failed ❌ ');
             })
             .finally(() => {
                 handleCloseUpdateModal();
@@ -110,14 +114,11 @@ const AllUsersList = () => {
         axios
             .delete(`${SERVER_URL}/deleteUser/${userId}`)
             .then((response) => {
-                console.log('User deleted successfully');
-                // Handle success, redirect, or show a success message
-                // For example, you can fetch the updated user list from the server again
                 fetchUsers();
+                handleNotify('User Deleted Successfully ✅');
             })
             .catch((error) => {
-                console.error('Failed to delete user:', error);
-                // Handle error, show an error message, or take appropriate action
+                handleNotify('User Deleted Failed ❌');
             });
     };
 
@@ -140,7 +141,6 @@ const AllUsersList = () => {
 
     // Function to handle filtering when the search query changes
     const handleSearchChange = (event) => {
-        // Update the search query state when the search input changes
         setSearchQuery(event.target.value);
     };
 
@@ -194,7 +194,13 @@ const AllUsersList = () => {
             <div>
                 <div style={{ textAlign: 'center' }} className="mb-5">
                     <h2>All Users List</h2>
-                    <button onClick={fetchUsers} className="btn btn-success">
+                    <button
+                        onClick={() => {
+                            fetchUsers();
+                            handleNotify('Data refreshed ✅');
+                        }}
+                        className="btn btn-success"
+                    >
                         Refresh Table Data
                     </button>
 

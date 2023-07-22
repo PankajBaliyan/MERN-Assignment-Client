@@ -5,11 +5,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-// TODO: ADd notifications
-// TODO: remove console.log
-
-const AddUserForm = () => {
-    const [errorMessage, setErrorMessage] = useState('');
+const AddUserForm = (props) => {
     const [formData, setFormData] = useState({
         name: '',
         username: '',
@@ -18,6 +14,10 @@ const AddUserForm = () => {
 
     // Add a state to control the visibility of the password field
     const [showPassword, setShowPassword] = useState(false);
+
+    const handleNotify = (message) => {
+        props.notify(message);
+    };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -41,8 +41,8 @@ const AddUserForm = () => {
 
         // Validate the password
         if (!isPasswordValid(password)) {
-            setErrorMessage(
-                'Password must be at least 8 characters long and contain both letters and numbers.',
+            handleNotify(
+                'Password must be at least 8 characters long and contain both letters and numbers. ❌',
             );
             return;
         }
@@ -51,9 +51,8 @@ const AddUserForm = () => {
         axios
             .post(`${SERVER_URL}/users`, formData)
             .then((response) => {
-                console.log('User added successfully:', response.data);
-                // Handle success, redirect, or show a success message
-                // TODO: add alert or notification after successfully added user
+                // console.log('User added successfully:', response.data);
+                handleNotify('User added successfully ✅');
             })
             .catch((error) => {
                 // console.error('Failed to add user:', error);
@@ -61,21 +60,21 @@ const AddUserForm = () => {
                     const { status } = error.response;
 
                     if (status === 409) {
-                        setErrorMessage('User Already Exists');
+                        handleNotify('User Already Exists 🙎‍♂️');
                     } else if (status === 400) {
-                        setErrorMessage(
-                            'Missing required fields or Invalid email format',
+                        handleNotify(
+                            'Missing required fields or Invalid email format 🤔',
                         );
                     } else {
                         console.error('Failed to add user:', error);
-                        setErrorMessage(
-                            'An error occurred while adding the user. Please try again later.',
+                        handleNotify(
+                            'An error occurred while adding the user. Please try again later. ❌',
                         );
                     }
                 } else {
                     console.error('Failed to add user:', error);
-                    setErrorMessage(
-                        'An error occurred while adding the user. Please try again later.',
+                    handleNotify(
+                        'An error occurred while adding the user. Please try again later. ❌',
                     );
                 }
             });
@@ -137,12 +136,6 @@ const AddUserForm = () => {
                     onChange={handleChange}
                     required
                 />
-                {!errorMessage && (
-                    <div className="invalid-feedback">
-                        Password must be at least 8 characters with numbers and
-                        letters
-                    </div>
-                )}
                 <button
                     className="btn btn-outline-secondary mt-3"
                     type="button"
@@ -154,13 +147,11 @@ const AddUserForm = () => {
                     ) : (
                         <FontAwesomeIcon className="mx-2" icon={faEye} />
                     )}{' '}
-                    {/* Show the eye icon */}
                 </button>
             </div>
             <button type="submit" className="btn btn-primary mt-3">
                 Add User
             </button>
-            {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
         </form>
     );
 };

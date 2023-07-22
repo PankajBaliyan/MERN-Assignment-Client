@@ -4,7 +4,7 @@ import AddUserForm from './AddUser';
 export default function Home(props) {
     return (
         <div className="container my-2">
-            <AddUserForm />
+            <AddUserForm notify={props.notify} />
         </div>
     );
 }
