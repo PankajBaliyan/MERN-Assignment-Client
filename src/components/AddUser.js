@@ -3,6 +3,8 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 // TODO: ADd notifications
 // TODO: remove console.log
 
@@ -34,6 +36,7 @@ const AddUserForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
+        // eslint-disable-next-line no-unused-vars
         const { name, username, password } = formData;
 
         // Validate the password
@@ -46,7 +49,7 @@ const AddUserForm = () => {
 
         // Send the data to the backend API using Axios
         axios
-            .post('http://localhost:3001/users', formData)
+            .post(`${SERVER_URL}/users`, formData)
             .then((response) => {
                 console.log('User added successfully:', response.data);
                 // Handle success, redirect, or show a success message

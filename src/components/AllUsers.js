@@ -36,8 +36,9 @@ const AllUsersList = () => {
     const [sortField, setSortField] = useState('name');
     const [sortOrder, setSortOrder] = useState('asc'); // 'asc' or 'desc'
 
-    // Used in serial number in users list
-    let userNumber = 0;
+    // Used in pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const [usersPerPage] = useState(5); // Number of users displayed per page
 
     useEffect(() => {
         fetchUsers();
@@ -88,10 +89,7 @@ const AllUsersList = () => {
 
         // Make an HTTP PUT request to update the user details
         axios
-            .patch(
-                `${SERVER_URL}/updateUserDetails/${userId}`,
-                updateData,
-            )
+            .patch(`${SERVER_URL}/updateUserDetails/${userId}`, updateData)
             .then((response) => {
                 console.log('User data updated successfully:', response.data);
                 // Handle success, show a success message, or take appropriate action
@@ -127,6 +125,7 @@ const AllUsersList = () => {
         // Toggle the visibility of the password field
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
+
     // Function to handle sorting when a table header is clicked
     const handleSort = (field) => {
         // If the clicked field is the current sort field, toggle the sort order
@@ -166,6 +165,21 @@ const AllUsersList = () => {
                 : bValue.localeCompare(aValue);
         }
     });
+    // Calculate the total number of pages
+    const totalPages = Math.ceil(sortedAndFilteredUsers.length / usersPerPage);
+
+    // Function to get the current users to display on the current page
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const currentUsers = sortedAndFilteredUsers.slice(
+        indexOfFirstUser,
+        indexOfLastUser,
+    );
+
+    // Function to handle pagination page changes
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -178,7 +192,7 @@ const AllUsersList = () => {
     return (
         <div>
             <div>
-                <div style={{ textAlign: 'center' }} className='mb-5'>
+                <div style={{ textAlign: 'center' }} className="mb-5">
                     <h2>All Users List</h2>
                     <button onClick={fetchUsers} className="btn btn-success">
                         Refresh Table Data
@@ -247,9 +261,9 @@ const AllUsersList = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {sortedAndFilteredUsers.map((user) => (
+                            {currentUsers.map((user, index) => (
                                 <tr key={user._id}>
-                                    <th scope="row">{(userNumber += 1)}</th>
+                                    <td>{indexOfFirstUser + index + 1}</td>{' '}
                                     <td>{user.name}</td>
                                     <td>{user.username}</td>
                                     <td>
@@ -275,6 +289,33 @@ const AllUsersList = () => {
                         </tbody>
                     </table>
                 )}
+
+                {/* Render pagination controls */}
+                <div>
+                    <nav>
+                        <ul className="pagination">
+                            {Array.from({ length: totalPages }, (_, index) => (
+                                <li
+                                    key={index}
+                                    className={`page-item ${
+                                        currentPage === index + 1
+                                            ? 'active'
+                                            : ''
+                                    }`}
+                                >
+                                    <button
+                                        className="page-link"
+                                        onClick={() =>
+                                            handlePageChange(index + 1)
+                                        }
+                                    >
+                                        {index + 1}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
+                </div>
 
                 {/* Update Modal */}
                 <Modal
@@ -345,7 +386,6 @@ const AllUsersList = () => {
                                         icon={faEye}
                                     />
                                 )}{' '}
-                                {/* Show the eye icon */}
                             </button>
                         </div>
                         <button type="submit" className="btn btn-success me-2">
