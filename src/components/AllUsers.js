@@ -10,6 +10,8 @@ import {
     faSort,
 } from '@fortawesome/free-solid-svg-icons';
 
+import Skeleton from './Skeleton';
+
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const AllUsersList = (props) => {
@@ -187,7 +189,7 @@ const AllUsersList = (props) => {
     };
 
     if (loading) {
-        return <div className="mt-3 text-center">Loading...</div>;
+        return <Skeleton />;
     }
 
     if (error) {

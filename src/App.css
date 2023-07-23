@@ -6,6 +6,30 @@ tr {
     text-align: center;
 }
 
+table {
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+
+/* Skeleton.css */
+.skeleton {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.skeleton-content {
+    flex: 1;
+}
+
+.skeleton-line {
+    height: 12px;
+    /* width: 100%; */
+    background-color: #ccc !important;
+    margin-bottom: 8px;
+    border-radius: 10px;
+}
+
 .active > .page-link,
 .page-link.active {
     z-index: 0 !important;
