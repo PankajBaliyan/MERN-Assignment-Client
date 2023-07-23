@@ -8,7 +8,7 @@ const Skeleton = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setShowSkeleton((prevShowSkeleton) => !prevShowSkeleton);
-        }, 10000); // Adjust the blinking speed as needed (500ms in this case)
+        }, 500); // Adjust the blinking speed as needed (500ms in this case)
 
         return () => clearInterval(interval);
     }, []);
