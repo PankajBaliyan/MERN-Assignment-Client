@@ -34,6 +34,7 @@ const Skeleton = () => {
                             />
                         </div>
                     </div>
+                    <h2 className='mt-2'>Data fetching ...</h2>
                 </div>
 
                 <table className="table">
