@@ -54,7 +54,7 @@ const Skeleton = () => {
                             <td className="skeleton-line"></td>
                             <td className="skeleton-line"></td>
                             <td className="skeleton-line"></td>
-                            <td style={{ width: '30%' }}>
+                            <td style={{ width: '37%' }}>
                                 <button
                                     className="btn btn-success me-2"
                                     disabled
@@ -70,7 +70,7 @@ const Skeleton = () => {
                             <td className="skeleton-line"></td>
                             <td className="skeleton-line"></td>
                             <td className="skeleton-line"></td>
-                            <td style={{ width: '30%' }}>
+                            <td style={{ width: '37%' }}>
                                 <button
                                     className="btn btn-success me-2"
                                     disabled
@@ -86,7 +86,23 @@ const Skeleton = () => {
                             <td className="skeleton-line"></td>
                             <td className="skeleton-line"></td>
                             <td className="skeleton-line"></td>
-                            <td style={{ width: '30%' }}>
+                            <td style={{ width: '37%' }}>
+                                <button
+                                    className="btn btn-success me-2"
+                                    disabled
+                                >
+                                    Update
+                                </button>
+                                <button className="btn btn-danger" disabled>
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="skeleton-line"></td>
+                            <td className="skeleton-line"></td>
+                            <td className="skeleton-line"></td>
+                            <td style={{ width: '37%' }}>
                                 <button
                                     className="btn btn-success me-2"
                                     disabled
